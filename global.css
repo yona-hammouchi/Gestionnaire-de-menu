@@ -34,5 +34,11 @@ body h1{
     align-items: center;
     gap: 20em;
     color: white;
-
 }
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
