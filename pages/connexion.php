@@ -1,7 +1,10 @@
 <?php
-require_once '../includes/db_connection.php';
+require_once '../includes/db_connexion.php';
 
 // Validation du formulaire
+
+session_start();
+
 if (isset($postData['email']) &&  isset($postData['password'])) {
     if (!filter_var($postData['email'], FILTER_VALIDATE_EMAIL)) {
         $errorMessage = 'Il faut un email valide pour soumettre le formulaire.';
