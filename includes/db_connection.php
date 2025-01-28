@@ -25,21 +25,6 @@ try {
     // Exécution de la commande SQL pour `users`
     $pdo->exec($sql_users);
     echo "Table `users` créée avec succès (si elle n'existait pas déjà).<br>";
-
-    // Commande SQL pour créer la table `user_management`
-    $sql_user_management = "
-        CREATE TABLE IF NOT EXISTS user_management (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(50) NOT NULL UNIQUE,
-            email VARCHAR(100) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ";
-
-    // Exécution de la commande SQL pour `user_management`
-    $pdo->exec($sql_user_management);
-    echo "Table `user_management` créée avec succès (si elle n'existait pas déjà).<br>";
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion ou d'exécution SQL
     die("Erreur : " . $e->getMessage());

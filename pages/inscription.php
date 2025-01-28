@@ -4,7 +4,7 @@ require_once '../includes/db_connection.php';
 
 <body>
     <h1>INSCRIPTION</h1>
-    <form action="pages/inscription.php" method="POST">
+    <form action="/Gestionnaire-de-menu/pages/inscription.php" method="POST">
         <label for="username">Nom d'utilisateur :</label>
         <input type="text" id="username" name="username" required><br><br>
 
@@ -18,6 +18,8 @@ require_once '../includes/db_connection.php';
         <input type="password" id="confirm_password" name="confirm_password" required><br><br>
         <button type="submit">S'inscrire</button>
     </form>
+
+    <a href="./connexion.php">login</a>
 </body>
 
 <?php
