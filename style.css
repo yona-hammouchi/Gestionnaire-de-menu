@@ -1,6 +1,14 @@
 body{
     padding: 0px;
     margin: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 5em;
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 50px;
+    font-style: normal;
+
 }
 
 .navbar{
@@ -17,7 +25,10 @@ input[type="search"]{
     width: 100%;
     height: 30px;
     border-radius: 15px;
+    text-align: center;
 }
+
+
 
 .main_index{
     display: flex;
@@ -31,10 +42,29 @@ input[type="search"]{
 }
 
 .texte_index{
-    background-color:#D9D9D9 ;
-    text-align: center;
-    padding: 50px;
-    border-radius: 86px;
-
+    align-self: center;
 }
+
+.photo_recettes{
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    gap: 5em;
+}
+h1{
+    text-align: center;
+    font-family: "Kaushan Script", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.photo_placement{
+    padding-top: 10%;
+}
+
 
