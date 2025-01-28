@@ -1,0 +1,12 @@
+.produit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+}
