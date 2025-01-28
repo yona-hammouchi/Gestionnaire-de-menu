@@ -29,6 +29,7 @@ if (isset($postData['email']) &&  isset($postData['password'])) {
 
 ?>
 <?php
+
 //Si utilisateur/trice est non identifié(e), on affiche le formulaire
 
 if (!isset($loggedUser)) : ?>
