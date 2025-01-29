@@ -53,18 +53,18 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
     <main>
         <h1>Bonjour, <?php echo $username; ?>!</h1>
 
-        <form action="/Gestionnaire-de-menu/pages/insert_plats.php" method="post">
-            <label for="nom_plats">Nom de votre plat:</label>
-            <input type="text" id="nom_plats" name="nom_plats" required><br>
-            <label for="description">Description:</label>
-            <textarea id="description" name="description"></textarea><br>
-            <label for="prix">Prix:</label>
-            <input type="text" id="prix" name="prix" required><br>
-            <input type="submit" name="action" value="Ajouter">
-            <input type="submit" name="action" value="Valider">
-            <input type="submit" name="action" value="Supprimer">
-            <input type="submit" name="action" value="Modifier">
-        </form>
+        <form action="./insert_plats.php" method="post">
+    <label for="titre">Titre du plat :</label>
+    <input type="text" name="titre" id="titre" required>
+    
+    <label for="description">Description :</label>
+    <textarea name="description" id="description"></textarea>
+
+    <label for="prix">Prix :</label>
+    <input type="number" name="prix" id="prix" step="0.01" required>
+
+    <button type="submit">Ajouter le plat</button>
+</form>
     </main>
 </body>
 
