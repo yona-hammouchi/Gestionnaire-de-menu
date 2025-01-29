@@ -24,7 +24,7 @@ try {
 
     // Exécution de la commande SQL pour `users`
     $pdo->exec($sql_users);
-    echo "Table `users` créée avec succès (si elle n'existait pas déjà).<br>";
+    // echo "Table `users` créée avec succès (si elle n'existait pas déjà).<br>";
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion ou d'exécution SQL
     die("Erreur : " . $e->getMessage());

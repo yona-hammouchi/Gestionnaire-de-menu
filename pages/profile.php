@@ -38,20 +38,39 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="./img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <img src="./img/logo profile.png" alt="logo_profile">
+                        <a href="./pages/inscription.php"><img src="./assets/img/logo profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
         </nav>
     </header>
+
     <main>
         <h1>Bonjour, <?php echo $username; ?>!</h1>
-        <section class="produit">
+
+        <form action="/Gestionnaire-de-menu/pages/insert_plats.php" method="post">
+            <label for="nom_plats">Nom de votre plat:</label>
+            <input type="text" id="nom_plats" name="nom_plats" required><br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea><br>
+            <label for="prix">Prix:</label>
+            <input type="text" id="prix" name="prix" required><br>
+            <input type="submit" name="action" value="Ajouter">
+            <input type="submit" name="action" value="Valider">
+            <input type="submit" name="action" value="Supprimer">
+            <input type="submit" name="action" value="Modifier">
+        </form>
+    </main>
+</body>
+
+</html>
+
+<!-- <section class="produit">
             <img src="./img/photo_recette1.png" alt="photo_recette1" width="100" height="100">
             <div class="ajouter">
                 <input type="text" placeholder="Nom de la recette">
@@ -65,25 +84,7 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
             <div class="ajouter">
                 <input type="button" value="Valider">
             </div>
-        </section>
-    </main>
-    <footer>
-        <section class="footer">
-            <div>
-                <p>
-                    Contact
-                </p>
-            </div>
-            <div>
-                Connexion
-            </div>
-            <div>
-                11 rue du Panier <br>
-                13002 Marseille
-            </div>
-        </section>
-    </footer>
-
+        </section> -->
 </body>
 
 </html>

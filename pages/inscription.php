@@ -3,6 +3,23 @@ require_once '../includes/db_connection.php';
 ?>
 
 <body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li>
+                    <div class="logo_acceuil">
+                        <img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                    </div>
+                </li>
+                <li>
+                    <div class="logo_navbar">
+                        <a href="./pages/inscription.php"><img src="./assets/img/logo profile.png" alt="logo_profile"></a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
     <h1>INSCRIPTION</h1>
     <form action="/Gestionnaire-de-menu/pages/inscription.php" method="POST">
         <label for="username">Nom d'utilisateur :</label>

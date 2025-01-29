@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <link rel="stylesheet" href="./global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,12 +18,12 @@
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="./img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="./pages/inscription.php"><img src="./img/logo profile.png" alt="logo_profile"></a>
+                        <a href="./pages/inscription.php"><img src="./assets/img/logo profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
@@ -32,7 +32,7 @@
     <main>
         <section class="main_index">
             <div class="img_acceuil">
-                <img src="./img/img_acceuil.png" alt="photo_acceuil">
+                <img src="./assets/img/img_acceuil.png" alt="photo_acceuil">
             </div>
             <div class="texte_index">
                 <h1>
@@ -48,13 +48,13 @@
         </h1>
 
         <section class="photo_recettes">
-            <img src="./img/photo_recette1.png" alt="photo_recette1" height="476" width="300">
+            <img src="./assets/img/photo_recette1.png" alt="photo_recette1" height="476" width="300">
             <div class="photo_placement">
-                <img src="./img/photo_recette2.png" alt="photo_recette2" height="476" width="300">
+                <img src="./assets/img/photo_recette2.png" alt="photo_recette2" height="476" width="300">
             </div>
-            <img src="./img/photo_recette3.png" alt="photo_recette3" height="476" width="300">
+            <img src="./assets/img/photo_recette3.png" alt="photo_recette3" height="476" width="300">
             <div class="photo_placement">
-                <img src="./img/photo_recette4.png" alt="photo_recette4" height="476" width="300">
+                <img src="./assets/img/photo_recette4.png" alt="photo_recette4" height="476" width="300">
             </div>
         </section>
 

@@ -44,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="../img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <img src="../assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="./inscription.php"><img src="../img/logo profile.png" alt="logo_profile"></a>
+                        <a href="./inscription.php"><img src="../assets/img/logo profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
