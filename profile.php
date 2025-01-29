@@ -21,29 +21,27 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./global.css">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="styles\global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <title>Profil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
+
 <body>
-    <header>
+<header>
         <nav>
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <a href ="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="./pages/inscription.php"><img src="./assets/img/logo profile.png" alt="logo_profile"></a>
+                        <a href="profile.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
@@ -66,6 +64,22 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
     <button type="submit">Ajouter le plat</button>
 </form>
     </main>
+    <footer>
+        <section class="footer">
+            <div>
+                <p>
+                    Contact
+                </p>
+            </div>
+            <div>
+                Connexion
+            </div>
+            <div>
+                11 rue du Panier <br>
+                13002 Marseille
+            </div>
+        </section>
+    </footer>
 </body>
 
 </html>

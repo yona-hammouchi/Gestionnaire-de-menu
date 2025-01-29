@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/db_connection.php';
+require_once 'includes\db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
@@ -29,27 +29,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../global.css">
-    <link rel="stylesheet" href="../style2.css">
-    <title>Connexion</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="styles\global.css">
+    <title>Cook & Share</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
+
 <body>
-    <header>
+<header>
         <nav>
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="../assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <a href ="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="./inscription.php"><img src="../assets/img/logo profile.png" alt="logo_profile"></a>
+                        <a href="profile.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
