@@ -22,9 +22,22 @@ try {
         )
     ";
 
-    // Exécution de la commande SQL pour `users`
+    // Commande SQL pour créer la table `plats`
+    $sql_plats = "
+        CREATE TABLE IF NOT EXISTS plats (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            titre VARCHAR(255) NOT NULL,
+            description TEXT NOT NULL,
+            image VARCHAR(255),
+            prix DECIMAL(10,2) NOT NULL
+        )
+    ";
+
+    // Exécution des commandes SQL
     $pdo->exec($sql_users);
-    // echo "Table `users` créée avec succès (si elle n'existait pas déjà).<br>";
+    $pdo->exec($sql_plats);
+
+    echo "Tables `users` et `plats` créées avec succès (si elles n'existaient pas déjà).<br>";
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion ou d'exécution SQL
     die("Erreur : " . $e->getMessage());

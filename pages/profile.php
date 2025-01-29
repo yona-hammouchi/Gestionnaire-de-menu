@@ -14,7 +14,6 @@ if (isset($_COOKIE['user_id'])) {
 $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username']) : 'Invité';
 ?>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -29,7 +28,7 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
     <link
         href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-    <title>Profil</title>
+    <title>Profile</title>
 </head>
 
 <body>
@@ -38,12 +37,12 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <img src="./assets/img/logo_cook_&_share.png" alt="logo" height="100px">
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="./pages/inscription.php"><img src="./assets/img/logo profile.png" alt="logo_profile"></a>
+                        <a href="./pages/inscription.php"><img src="./assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
@@ -51,40 +50,33 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
     </header>
 
     <main>
-        <h1>Bonjour, <?php echo $username; ?>!</h1>
 
-        <form action="/Gestionnaire-de-menu/pages/insert_plats.php" method="post">
-            <label for="nom_plats">Nom de votre plat:</label>
-            <input type="text" id="nom_plats" name="nom_plats" required><br>
-            <label for="description">Description:</label>
-            <textarea id="description" name="description"></textarea><br>
-            <label for="prix">Prix:</label>
-            <input type="text" id="prix" name="prix" required><br>
-            <input type="submit" name="action" value="Ajouter">
-            <input type="submit" name="action" value="Valider">
-            <input type="submit" name="action" value="Supprimer">
-            <input type="submit" name="action" value="Modifier">
-        </form>
-    </main>
-</body>
+        <head>
+            <h1>Bonjour, <?php echo $username; ?>!</h1>
+            <title>Ajouter un plat</title>
+        </head>
+
+        <body>
+            <h2>Ajouter un plat</h2>
+            <form action="/Gestionnaire-de-menu/pages/insert_plats.php" method="post" enctype="multipart/form-data">
+                <label for="titre">Nom de votre plat:</label>
+                <input type="text" id="titre" name="titre" required><br>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea><br>
+                <label for="prix">Prix:</label>
+                <input type="number" id="prix" name="prix" required><br>
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image"><br>
+                <input type="submit" name="action" value="Ajouter">
+                <input type="submit" name="action" value="Valider">
+                <input type="submit" name="action" value="Supprimer">
+                <input type="submit" name="action" value="Modifier">
+            </form>
+
+        </body>
 
 </html>
-
-<!-- <section class="produit">
-            <img src="./img/photo_recette1.png" alt="photo_recette1" width="100" height="100">
-            <div class="ajouter">
-                <input type="text" placeholder="Nom de la recette">
-            </div>
-            <div class="ajouter">
-                <input type="button" value="Créer">
-            </div>
-            <div class="ajouter">
-                <input type="button" value="Modifier">
-            </div>
-            <div class="ajouter">
-                <input type="button" value="Valider">
-            </div>
-        </section> -->
+</main>
 </body>
 
 </html>

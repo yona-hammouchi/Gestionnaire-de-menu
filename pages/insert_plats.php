@@ -1,40 +1,45 @@
 <?php
-include '../includes/db_connection.php';
+// Connexion à la base de données
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=Gestionnaire-de-menu;charset=utf8', 'root', 'root');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
 
+// Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Vérifiez que les champs de formulaire existent et ne sont pas vides
-    $nom_plat = isset($_POST['nom_plat']) ? $pdo->quote($_POST['nom_plat']) : null;
-    $description = isset($_POST['description']) ? $pdo->quote($_POST['description']) : null;
-    $prix = isset($_POST['prix']) ? $pdo->quote($_POST['prix']) : null;
-    $action = $_POST['action'];
+    $titre = $_POST['titre'];
+    $description = $_POST['description'];
+    $prix = $_POST['prix'];
 
-    // Vérifiez que les champs obligatoires ne sont pas null
-    if ($nom_plat === null || $prix === null) {
-        die("Erreur : Les champs 'Nom de votre plat' et 'Prix' sont obligatoires.");
+    // Dossier d'enregistrement des images
+    $uploadDir = __DIR__ . "/../assets/image_recettes/"; // Chemin correct
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true); // Crée le dossier si nécessaire
     }
 
-    switch ($action) {
-        case 'Ajouter':
-            $sql = "INSERT INTO plats (nom_plat, description, prix) VALUES ($nom_plat, $description, $prix)";
-            break;
-        case 'Valider':
-            // Code pour valider une recette (à définir selon les besoins)
-            break;
-        case 'Supprimer':
-            $sql = "DELETE FROM plats WHERE nom_plat=$nom_plat";
-            break;
-        case 'Modifier':
-            $sql = "UPDATE plats SET description=$description, prix=$prix WHERE nom_plat=$nom_plat";
-            break;
-        default:
-            echo "Action non reconnue.";
-            exit();
+    // Gestion de l'upload de l'image
+    $imagePath = NULL;
+    if (!empty($_FILES["image"]["name"])) {
+        $imageName = time() . '_' . basename($_FILES["image"]["name"]);
+        $imagePath = "assets/image_recettes/" . $imageName; // Chemin relatif
+
+        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $uploadDir . $imageName)) {
+            die("Erreur : Impossible d'uploader l'image.");
+        }
     }
 
-    try {
-        $pdo->exec($sql);
-        echo "Action '$action' réalisée avec succès.";
-    } catch (PDOException $e) {
-        echo "Erreur: " . $sql . "<br>" . $e->getMessage();
-    }
+    // Requête SQL
+    $sql = "INSERT INTO plats (titre, description, image, prix) VALUES (:titre, :description, :image, :prix)";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        ':titre' => $titre,
+        ':description' => $description,
+        ':image' => $imagePath,
+        ':prix' => $prix
+    ]);
+
+    echo "Plat ajouté avec succès !";
 }
