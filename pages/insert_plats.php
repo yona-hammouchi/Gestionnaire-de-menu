@@ -9,37 +9,31 @@ try {
 
 // Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $titre = $_POST['titre'];
-    $description = $_POST['description'];
-    $prix = $_POST['prix'];
+    // Vérifier si les champs nécessaires sont remplis
+    if (empty($_POST['titre']) || empty($_POST['prix'])) {
+        echo "Erreur : les champs Titre du plat et prix sont obligatoires.";
+    } else {
+        // Récupérer les données du formulaire
+        $titre = $_POST['titre'];
+        $description = $_POST['description'];
+        $prix = $_POST['prix'];
 
-    // Dossier d'enregistrement des images
-    $uploadDir = __DIR__ . "/../assets/image_recettes/"; // Chemin correct
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true); // Crée le dossier si nécessaire
-    }
+        try {
+            // Préparer la requête SQL pour l'insertion dans la base de données
+            $sql = "INSERT INTO plats (titre, description, prix) VALUES (:titre, :description, :prix)";
+            $stmt = $pdo->prepare($sql);
 
-    // Gestion de l'upload de l'image
-    $imagePath = NULL;
-    if (!empty($_FILES["image"]["name"])) {
-        $imageName = time() . '_' . basename($_FILES["image"]["name"]);
-        $imagePath = "assets/image_recettes/" . $imageName; // Chemin relatif
+            // Lier les paramètres à la requête préparée
+            $stmt->bindParam(':titre', $titre);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':prix', $prix);
 
-        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $uploadDir . $imageName)) {
-            die("Erreur : Impossible d'uploader l'image.");
+            // Exécuter la requête
+            $stmt->execute();
+
+            echo "Le plat a été ajouté avec succès !";
+        } catch (PDOException $host) {
+            echo "Erreur : " . $host->getMessage();
         }
     }
-
-    // Requête SQL
-    $sql = "INSERT INTO plats (titre, description, image, prix) VALUES (:titre, :description, :image, :prix)";
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        ':titre' => $titre,
-        ':description' => $description,
-        ':image' => $imagePath,
-        ':prix' => $prix
-    ]);
-
-    echo "Plat ajouté avec succès !";
 }

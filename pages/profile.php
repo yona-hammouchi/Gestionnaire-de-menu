@@ -50,30 +50,22 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
     </header>
 
     <main>
+        <h1>Bonjour, <?php echo $username; ?>!</h1>
 
-        <head>
-            <h1>Bonjour, <?php echo $username; ?>!</h1>
-            <title>Ajouter un plat</title>
-        </head>
+        <form action="./insert_plats.php" method="post">
+            <label for="titre">Titre du plat :</label>
+            <input type="text" name="titre" id="titre" required>
 
-        <body>
-            <h2>Ajouter un plat</h2>
-            <form action="/Gestionnaire-de-menu/pages/insert_plats.php" method="post" enctype="multipart/form-data">
-                <label for="titre">Nom de votre plat:</label>
-                <input type="text" id="titre" name="titre" required><br>
-                <label for="description">Description:</label>
-                <textarea id="description" name="description"></textarea><br>
-                <label for="prix">Prix:</label>
-                <input type="number" id="prix" name="prix" required><br>
-                <label for="image">Image:</label>
-                <input type="file" id="image" name="image"><br>
-                <input type="submit" name="action" value="Ajouter">
-                <input type="submit" name="action" value="Valider">
-                <input type="submit" name="action" value="Supprimer">
-                <input type="submit" name="action" value="Modifier">
-            </form>
+            <label for="description">Description :</label>
+            <textarea name="description" id="description"></textarea>
 
-        </body>
+            <label for="prix">Prix :</label>
+            <input type="number" name="prix" id="prix" step="0.01" required>
+
+            <button type="submit">Ajouter le plat</button>
+        </form>
+    </main>
+</body>
 
 </html>
 </main>
