@@ -1,32 +1,3 @@
-<?php
-require_once '../includes/db_connection.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = htmlspecialchars($_POST['email']);
-    $password = $_POST['password'];
-
-    if (empty($email) || empty($password)) {
-        $error = "Tous les champs sont obligatoires.";
-    } else {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($password, $user['password'])) {
-            // Stocker les informations de l'utilisateur dans un cookie
-            setcookie('user_id', $user['id'], time() + (86400 * 30), "/"); // 86400 = 1 jour
-            setcookie('username', $user['username'], time() + (86400 * 30), "/");
-
-            // Rediriger l'utilisateur vers une autre page
-            header("Location:/Gestionnaire-de-menu/pages/profile.php");
-            exit();
-        } else {
-            $error = "Email ou mot de passe incorrect.";
-        }
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -89,3 +60,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
+
+<?php
+require_once '../includes/db_connection.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = htmlspecialchars($_POST['email']);
+    $password = $_POST['password'];
+
+    if (empty($email) || empty($password)) {
+        $error = "Tous les champs sont obligatoires.";
+    } else {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            // Stocker les informations de l'utilisateur dans un cookie
+            setcookie('user_id', $user['id'], time() + (86400 * 30), "/"); // 86400 = 1 jour
+            setcookie('username', $user['username'], time() + (86400 * 30), "/");
+
+            // Rediriger l'utilisateur vers une autre page
+            header("Location:/Gestionnaire-de-menu/pages/profile.php");
+            exit();
+        } else {
+            $error = "Email ou mot de passe incorrect.";
+        }
+    }
+}
+?>

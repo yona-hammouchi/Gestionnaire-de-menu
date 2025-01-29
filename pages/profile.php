@@ -20,7 +20,7 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./global.css">
+    <link rel="stylesheet" href="global.css">
     <link rel="stylesheet" href="style2.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,13 +56,18 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
             <label for="titre">Titre du plat :</label>
             <input type="text" name="titre" id="titre" required>
 
-            <label for="description">Description :</label>
+            <label for="description">Descriptions :</label>
             <textarea name="description" id="description"></textarea>
 
             <label for="prix">Prix :</label>
             <input type="number" name="prix" id="prix" step="0.01" required>
 
-            <button type="submit">Ajouter le plat</button>
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image"><br><br><br>
+            <input type="submit" name="action" value="Ajouter">
+            <input type="submit" name="action" value="Valider">
+            <input type="submit" name="action" value="Supprimer">
+            <input type="submit" name="action" value="Modifier">
         </form>
     </main>
 </body>
