@@ -17,7 +17,7 @@
             <ul class = "navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="./img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                    <a href ="index.php"><img src="./img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
