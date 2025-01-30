@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             setcookie('username', $user['username'], time() + (86400 * 30), "/");
 
             // Rediriger l'utilisateur vers une autre page
-            header("Location:/Gestionnaire-de-menu/pages/profile.php");
+            header("Location:/Gestionnaire-de-menu/profile.php");
             exit();
         } else {
             $error = "Email ou mot de passe incorrect.";

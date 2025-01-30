@@ -36,7 +36,7 @@ require_once 'includes\db_connection.php';
     </header>
 
     <h1>INSCRIPTION</h1>
-            <form action="/Gestionnaire-de-menu/pages/inscription.php" method="POST">
+            <form action="/Gestionnaire-de-menu/inscription.php" method="POST">
                 <label for="username">Nom d'utilisateur :</label>
                 <input type="text" id="username" name="username" required><br><br>
 
@@ -50,7 +50,7 @@ require_once 'includes\db_connection.php';
                 <input type="password" id="confirm_password" name="confirm_password" required><br><br>
                 <button type="submit">S'inscrire</button>
 
-             <a href="./connexion.php"><span class="connexion">Déja inscris? Cliquez ici ! </span></a>
+             <a href="connexion.php"><span class="connexion">Déja inscris? Cliquez ici ! </span></a>
             </form>
 
     <footer>
