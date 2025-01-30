@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="titre">Titre du plat :</label>
             <input type="text" name="titre" id="titre" required>
 
-            <label for="description">Description :</label>
+            <label for="description">Description : ingredients</label>
             <textarea name="description" id="description" required></textarea>
 
             <label for="prix">Prix :</label>

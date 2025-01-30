@@ -21,12 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Redirection
                 header("Location: profile.php");
-            exit();
-        } else {
-            $error = "Email ou mot de passe incorrect.";
+                exit();
+            } else {
+                $error = "Email ou mot de passe incorrect.";
+            }
+        } catch (PDOException $e) {
+            $error = "Erreur de base de données : " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        $error = "Erreur de base de données : " . $e->getMessage();
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -92,5 +96,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </footer>
 </body>
-
-</html>
