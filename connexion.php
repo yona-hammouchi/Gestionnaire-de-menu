@@ -21,16 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Redirection
                 header("Location: profile.php");
-                exit();
-            } else {
-                $error = "Email ou mot de passe incorrect.";
-            }
-        } catch (PDOException $e) {
-            $error = "Erreur de base de données : " . $e->getMessage();
+            exit();
+        } else {
+            $error = "Email ou mot de passe incorrect.";
         }
-    }
-}
-?>
+    } catch (PDOException $e) {
+        $error = "Erreur de base de données : " . $e->getMessage();
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -38,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles\style_connexion.css">
+    <link rel="stylesheet" href="styles\global.css">
+    <title>Cook & Share</title>
     <link rel="stylesheet" href="./styles/style.css">
     <link rel="stylesheet" href="./styles/global.css">
-    <title>Cook & Share</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
