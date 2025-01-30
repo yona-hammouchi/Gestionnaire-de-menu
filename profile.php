@@ -21,7 +21,7 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="styles\style_profil.css">
     <link rel="stylesheet" href="styles\global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">

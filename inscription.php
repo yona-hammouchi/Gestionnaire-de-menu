@@ -8,7 +8,7 @@ require_once 'includes\db_connection.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="styles\style_inscription.css">
     <link rel="stylesheet" href="styles\global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,22 +36,23 @@ require_once 'includes\db_connection.php';
     </header>
 
     <h1>INSCRIPTION</h1>
-    <form action="/Gestionnaire-de-menu/pages/inscription.php" method="POST">
-        <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="username" required><br><br>
+            <form action="/Gestionnaire-de-menu/pages/inscription.php" method="POST">
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" name="username" required><br><br>
 
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required><br><br>
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" required><br><br>
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required><br><br>
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required><br><br>
 
-        <label for="confirm_password">Confirmer le mot de passe :</label>
-        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
-        <button type="submit">S'inscrire</button>
-    </form>
+                <label for="confirm_password">Confirmer le mot de passe :</label>
+                <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+                <button type="submit">S'inscrire</button>
 
-    <a href="./connexion.php">login</a>
+             <a href="./connexion.php"><span class="connexion">Déja inscris? Cliquez ici ! </span></a>
+            </form>
+
     <footer>
         <section class="footer">
             <div>
