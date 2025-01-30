@@ -1,6 +1,5 @@
-
 <?php
-require_once 'includes\db_connection.php';
+require_once 'includes/db_connection.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -9,7 +8,7 @@ require_once 'includes\db_connection.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="styles\global.css">
+    <link rel="stylesheet" href="./styles/global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +17,12 @@ require_once 'includes\db_connection.php';
 
 
 <body>
-<header>
+    <header>
         <nav>
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <a href ="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
+                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
@@ -36,7 +35,7 @@ require_once 'includes\db_connection.php';
     </header>
 
     <h1>INSCRIPTION</h1>
-    <form action="/Gestionnaire-de-menu/pages/inscription.php" method="POST">
+    <form action="inscription.php" method="POST">
         <label for="username">Nom d'utilisateur :</label>
         <input type="text" id="username" name="username" required><br><br>
 
@@ -51,7 +50,7 @@ require_once 'includes\db_connection.php';
         <button type="submit">S'inscrire</button>
     </form>
 
-    <a href="./connexion.php">login</a>
+    <a href="connexion.php">connexion</a>
     <footer>
         <section class="footer">
             <div>
@@ -69,6 +68,7 @@ require_once 'includes\db_connection.php';
         </section>
     </footer>
 </body>
+
 </html>
 
 

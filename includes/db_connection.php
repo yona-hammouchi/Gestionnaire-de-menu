@@ -7,10 +7,10 @@ $password = 'root'; // Mot de passe local (changez-le si nécessaire)
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo 'Connexion réussie !';
 } catch (PDOException $host) {
     echo 'Une erreur est survenue : ' . $host->getMessage();
 }
-// Connexion à la base de données avec PDO
 
 $uploadDir = __DIR__ . "/../assets/image_recettes/"; // Chemin correct
 if (!is_dir($uploadDir)) {
