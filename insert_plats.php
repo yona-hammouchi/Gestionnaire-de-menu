@@ -23,8 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Exécuter la requête
             $stmt->execute();
-
-            echo "Le plat a été ajouté avec succès !";
         } catch (PDOException $host) {
             echo "Erreur : " . $host->getMessage();
         }

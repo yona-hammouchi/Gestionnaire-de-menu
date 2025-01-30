@@ -1,5 +1,5 @@
 <?php
-
+include 'includes\db_connection.php';
 session_start();
 
 if (isset($_COOKIE['user_id'])) {
@@ -51,12 +51,16 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
     <main>
         <h1>Bonjour, <?php echo $username; ?>!</h1>
 
-        <form action="./insert_plats.php" method="post">
-    <label for="titre">Titre du plat :</label>
+        <form action="./insert_plats.php" method="post" enctype="multipart/form-data">
+
+    <label for="titre">Titre du plat :</label> 
     <input type="text" name="titre" id="titre" required>
+
+    <label for="image">Image</label>
+    <input type="file"> name="image" id="image">
     
     <label for="description">Description :</label>
-    <textarea name="description" id="description"></textarea>
+    <textarea name="description" id="description" required></textarea>
 
     <label for="prix">Prix :</label>
     <input type="number" name="prix" id="prix" step="0.01" required>
@@ -84,21 +88,36 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
 
 </html>
 
-<!-- <section class="produit">
-            <img src="./img/photo_recette1.png" alt="photo_recette1" width="100" height="100">
-            <div class="ajouter">
-                <input type="text" placeholder="Nom de la recette">
-            </div>
-            <div class="ajouter">
-                <input type="button" value="Créer">
-            </div>
-            <div class="ajouter">
-                <input type="button" value="Modifier">
-            </div>
-            <div class="ajouter">
-                <input type="button" value="Valider">
-            </div>
-        </section> -->
 </body>
 
 </html>
+<?php
+
+$pdo = new PDO("mysql:host=localhost;dbname=Gestionnaire-de-menu;charset=utf8", "root", "");
+
+$query = "SELECT * FROM plats";
+$result = $pdo->query($query);
+
+echo "<table style='border: 1px solid black; border-collapse: collapse; width: 100%;'>";
+echo "<thead><tr>";
+
+
+$columns = array_keys($result->fetch(PDO::FETCH_ASSOC));
+foreach ($columns as $column) {
+    echo "<th style='border: 1px solid black; padding: 5px;'>$column</th>";
+}
+
+echo "</tr></thead><tbody>";
+
+
+$result->execute();
+while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    echo "<tr>";
+    foreach ($row as $value) {
+        echo "<td style='border: 1px solid black; padding: 5px;'>$value</td>";
+    }
+    echo "</tr>";
+}
+
+echo "</tbody></table>";
+?>
