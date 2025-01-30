@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./global.css">
+    <link rel="stylesheet" href="styles\global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +18,12 @@
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px">
+                        <a href ="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="./pages/inscription.php"><img src="./assets/img/logo profile.png" alt="logo_profile"></a>
+                        <a href="inscription.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
