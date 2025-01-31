@@ -16,6 +16,25 @@ $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username'])
 <?php
 include 'includes\db_connection.php';
 
+// Suppression d'un plat
+if (isset($_POST['delete_id'])) {
+    $plat_id = $_POST['delete_id'];
+
+    try {
+        // Préparer la requête pour supprimer le plat
+        $sql = "DELETE FROM plats WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $plat_id);
+        $stmt->execute();
+
+        // Rediriger après la suppression
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifier si les champs nécessaires sont remplis
     if (empty($_POST['titre']) || empty($_POST['prix'])) {
@@ -25,16 +44,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $titre = $_POST['titre'];
         $description = $_POST['description'];
         $prix = $_POST['prix'];
+        $categorie_id = $_POST['categorie_id']; 
 
         try {
             // Préparer la requête SQL pour l'insertion dans la base de données
-            $sql = "INSERT INTO plats (titre, description, prix) VALUES (:titre, :description, :prix)";
+            $sql = "INSERT INTO plats (titre, description, prix, categorie_id) VALUES (:titre, :description, :prix, :categorie_id)";
             $stmt = $pdo->prepare($sql);
 
             // Lier les paramètres à la requête préparée
             $stmt->bindParam(':titre', $titre);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':prix', $prix);
+            $stmt->bindParam(':categorie_id', $categorie_id);
 
             // Exécuter la requête
             $stmt->execute();
@@ -50,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -64,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-
 
 <body>
 <header>
@@ -86,6 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <main>
     <h1>Bonjour, <?php echo $username; ?>!</h1>
+    <h1><a href = "menu.php">Menu</a><h1>
 
     <!-- Formulaire d'ajout de plat -->
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
@@ -99,6 +119,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="prix">Prix :</label>
         <input type="number" name="prix" id="prix" step="0.01" required>
 
+        <!-- Menu déroulant pour la catégorie -->
+        <label for="categorie">Catégorie :</label>
+        <select name="categorie_id" id="categorie" required>
+            <?php
+            // Récupérer toutes les catégories de la base de données
+            $stmt = $pdo->query("SELECT id,nom FROM categorie");
+            $categories = $stmt->fetchAll();
+
+            // Afficher chaque catégorie dans le menu déroulant
+            foreach ($categories as $categorie) {
+                echo "<option value='" . htmlspecialchars($categorie['id']) . "'>" . htmlspecialchars($categorie['nom']) . "</option>";
+            }
+            ?>
+        </select>
+
         <button type="submit">Ajouter le plat</button>
     </form>
 
@@ -106,12 +141,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Liste des plats</h2>
     <ul>
         <?php
-        // Récupérer et afficher tous les plats
-        $stmt = $pdo->query("SELECT * FROM plats");
+        $stmt = $pdo->query("SELECT plats.titre, plats.description, plats.prix, categorie.nom AS categorie FROM plats LEFT JOIN categorie ON plats.categorie_id = categorie.id");
         $plats = $stmt->fetchAll();
 
         foreach ($plats as $plat) {
-            echo "<li>" . htmlspecialchars($plat['titre']) . " - " . htmlspecialchars($plat['description']) . " - " .htmlspecialchars($plat['prix']) . "€</li>";   
+            echo "<li>" . htmlspecialchars($plat['titre']) . " - " . htmlspecialchars($plat['description']) . " - " . htmlspecialchars($plat['prix']) . "€ - " . htmlspecialchars($plat['categorie']) . "</li>";  
         }
         ?>
     </ul>
