@@ -26,4 +26,3 @@ if (!empty($_FILES["image"]["name"])) {
         die("Erreur : Impossible d'uploader l'image.");
     }
 }
-// Téléchargement de l'image   

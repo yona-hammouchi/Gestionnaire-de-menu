@@ -44,7 +44,7 @@
             </div>
         </section>
         <h1>
-            Les recettes les plus vues
+            Voici les menus de la semaines
         </h1>
 
         <section class="photo_recettes">
