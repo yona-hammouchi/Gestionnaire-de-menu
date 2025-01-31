@@ -7,6 +7,30 @@ if (isset($_COOKIE['username'])) {
     $username = 'Invité';
 }
 
+$username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username']) : 'Invité';
+?>
+<?php
+include 'includes\db_connection.php';
+
+// Suppression d'un plat
+if (isset($_POST['delete_id'])) {
+    $plat_id = $_POST['delete_id'];
+
+    try {
+        // Préparer la requête pour supprimer le plat
+        $sql = "DELETE FROM plats WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $plat_id);
+        $stmt->execute();
+
+        // Rediriger après la suppression
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifier si les champs nécessaires sont remplis
     if (empty($_POST['titre']) || empty($_POST['prix'])) {
@@ -16,18 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $titre = $_POST['titre'];
         $description = $_POST['description'];
         $prix = $_POST['prix'];
-        $id_categorie = $_POST['id_categorie'];
+        $categorie_id = $_POST['categorie_id'];
 
         try {
             // Préparer la requête SQL pour l'insertion dans la base de données
-            $sql = "INSERT INTO plats (titre, description, prix, id_categorie) VALUES (:titre, :description, :prix, :id_categorie)";
+            $sql = "INSERT INTO plats (titre, description, prix, categorie_id) VALUES (:titre, :description, :prix, :categorie_id)";
             $stmt = $pdo->prepare($sql);
 
             // Lier les paramètres à la requête préparée
             $stmt->bindParam(':titre', $titre);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':prix', $prix);
-            $stmt->bindParam(':id_categorie', $id_categorie);
+            $stmt->bindParam(':categorie_id', $categorie_id);
 
             // Exécuter la requête
             $stmt->execute();
@@ -77,66 +101,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <main>
         <h1>Bonjour, <?php echo $username; ?>!</h1>
-        <!-- Formulaire d'ajout de plat -->
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
-            <label for="titre">Titre du plat :</label>
-            <input type="text" name="titre" id="titre" required>
+        <h1><a href="menu.php">Menu</a>
+            <h1>
 
-            <label for="description">Description : ingredients</label>
-            <textarea name="description" id="description" required></textarea>
+                <!-- Formulaire d'ajout de plat -->
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
 
-            <label for="image">Image :</label>
-            <input type="file" name="image" id="image" accept="image" required><img src="<?php echo $image_path; ?>" alt="Image"><br>
+                    <label for="titre">Titre du plat :</label>
+                    <input type="text" name="titre" id="titre" required>
 
-            <label for="prix">Prix :</label>
-            <input type="number" name="prix" id="prix" step="0.01" required>
-            <label for="categorie">Catégorie :</label>
+                    <label for="description">Description :</label>
+                    <textarea name="description" id="description" required></textarea>
 
-            <select name="id_categorie" id="id_categorie" required>
-                <?php
-                $Categories = $pdo->query("SELECT * FROM Categories")->fetchAll();
-                foreach ($Categories as $Categorie) {
-                    echo "<option value='{$Categorie['id']}'>{$Categorie['Nom']}</option>";
-                }
-                ?>
-            </select>
-            <button type="submit">Ajouter le plat</button>
-        </form>
+                    <label for="prix">Prix :</label>
+                    <input type="number" name="prix" id="prix" step="0.01" required>
 
-        <section>
-            <h2>Liste des plats</h2>
-            <br><br>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Image</th><br>
-                            <th>Titre</th><br>
-                            <th>Description</th><br>
-                            <th>Prix</th><br>
-                            <th>Catégorie</th><br>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <!-- Menu déroulant pour la catégorie -->
+                    <label for="categorie">Catégorie :</label>
+                    <select name="categorie_id" id="categorie" required>
                         <?php
-                        // Récupérer et afficher les 5 derniers plats ajoutés
-                        $stmt = $pdo->query("SELECT * FROM plats");
-                        $plats = $stmt->fetchAll();
+                        // Récupérer toutes les catégories de la base de données
+                        $stmt = $pdo->query("SELECT id,nom FROM categorie");
+                        $categories = $stmt->fetchAll();
 
-                        foreach ($plats as $plat) {
-                            echo "<tr>";
-                            echo "<td><img src='" . htmlspecialchars($plat['image_url'] ?? '') . "' alt='" . htmlspecialchars($plat['titre'] ?? '') . "' style='width:300px;height:300px(00px;'></td>";
-                            echo "<td>" . htmlspecialchars($plat['titre'] ?? '') . "</td>";
-                            echo "<td>" . htmlspecialchars($plat['description'] ?? '') . "</td>";
-                            echo "<td>" . htmlspecialchars($plat['prix'] ?? '') . "€</td>";
-                            echo "<td>" . htmlspecialchars($plat['id_categorie'] ?? '') . "</td>";
-                            echo "</tr>";
+                        // Afficher chaque catégorie dans le menu déroulant
+                        foreach ($categories as $categorie) {
+                            echo "<option value='" . htmlspecialchars($categorie['id']) . "'>" . htmlspecialchars($categorie['nom']) . "</option>";
                         }
                         ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                    </select>
+
+                    <button type="submit">Ajouter le plat</button>
+                </form>
+
+                <!-- Affichage des plats -->
+                <h2>Liste des plats</h2>
+                <ul>
+                    <?php
+                    $stmt = $pdo->query("SELECT plats.titre, plats.description, plats.prix, categorie.nom AS categorie FROM plats LEFT JOIN categorie ON plats.categorie_id = categorie.id");
+                    $plats = $stmt->fetchAll();
+
+                    foreach ($plats as $plat) {
+                        echo "<li>" . htmlspecialchars($plat['titre']) . " - " . htmlspecialchars($plat['description']) . " - " . htmlspecialchars($plat['prix']) . "€ - " . htmlspecialchars($plat['categorie']) . "</li>";
+                    }
+                    ?>
+                </ul>
     </main>
 
     <footer>
