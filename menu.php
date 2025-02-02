@@ -1,17 +1,17 @@
 <?php
 include 'includes/db_connection.php';
-// session_start();
+session_start();
 
-// if (isset($_COOKIE['user_id'])) {
-//     if (basename($_SERVER['PHP_SELF']) !== 'profile.php') {
-//         header('Location: /Gestionnaire-de-menu/pages/profile.php');
-//         exit();
-//     }
-// } else {
-//     die("Accès non autorisé. Veuillez vous connecter.");
-// }
+if (isset($_COOKIE['user_id'])) {
+    if (basename($_SERVER['PHP_SELF']) !== 'profile.php') {
+        header('Location: /Gestionnaire-de-menu/pages/profile.php');
+        exit();
+    }
+} else {
+    die("Accès non autorisé. Veuillez vous connecter.");
+}
 
-// $username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username']) : 'Invité';
+$username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username']) : 'Invité';
 
 // Récupérer les plats des catégories disponibles
 $stmt = $pdo->query("SELECT id, titre, categorie_id FROM plats");
@@ -45,8 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['menu'])) {
         }
 
         echo "Menu créé avec succès !";
-    } catch (PDOException $host) {
-        echo "Erreur : " . $host->getMessage();
+    } catch (PDOException $et) {
+        echo "Erreur : " . $e->getMessage();
     }
 }
 

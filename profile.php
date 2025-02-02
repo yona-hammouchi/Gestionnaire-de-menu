@@ -149,16 +149,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
 
     <footer>
-        <div>
-            <p>Contact</p>
-        </div>
-        <div>
-            Connexion
-        </div>
-        <div>
-            11 rue du Panier <br>
-            13002 Marseille
-        </div>
+    <section class = "footer">
+            <div>
+                <p>Contact</p>
+            </div>
+            <div>
+                Connexion
+            </div>
+            <div>
+                11 rue du Panier <br>
+                13002 Marseille
+            </div>
+        </section>
     </footer>
 </body>
 
