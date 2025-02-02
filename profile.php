@@ -1,5 +1,5 @@
 <?php
-include 'includes\db_connection.php';
+include 'includes/db_connection.php';
 session_start();
 
 if (isset($_COOKIE['user_id'])) {
@@ -30,8 +30,8 @@ if (isset($_POST['delete_id'])) {
         // Rediriger après la suppression
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
-    } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
+    } catch (PDOException $host) {
+        echo "Erreur : " . $host->getMessage();
     }
 }
 
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles\global.css">
-    <link rel="stylesheet" href="styles\style_profil.css">
+    <link rel="stylesheet" href="styles/style_profil.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
