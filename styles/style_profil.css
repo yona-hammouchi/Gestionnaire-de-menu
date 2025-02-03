@@ -1,12 +1,12 @@
-form{
+form {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap:1em;
+    gap: 1em;
 }
 
 h2,
-ul{
+ul {
     text-align: center;
     list-style-type: none;
 }

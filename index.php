@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="styles\global.css">
+    <link rel="stylesheet" href="./styles/global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <a href ="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
+                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
@@ -39,12 +39,12 @@
                     Bienvenue sur Cook & Share !
                 </h1>
                 <p>
-                    Notre site de partage de recette entre restaurateur
+                    Votre Gestionnaire de menu sur mesure !
                 </p>
             </div>
         </section>
         <h1>
-            Les recettes les plus vues
+            Voici les menus de la semaines
         </h1>
 
         <section class="photo_recettes">
