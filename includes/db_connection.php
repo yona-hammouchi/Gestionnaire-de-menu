@@ -11,18 +11,3 @@ try {
 } catch (PDOException $host) {
     echo 'Une erreur est survenue : ' . $host->getMessage();
 }
-
-$uploadDir = __DIR__ . "/../assets/image_recettes/"; // Chemin correct
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true); // Crée le dossier si nécessaire
-}
-// Dossier de téléchargement des images 
-$imagePath = NULL;
-if (!empty($_FILES["image"]["name"])) {
-    $imageName = time() . '_' . basename($_FILES["image"]["name"]);
-    $imagePath = "assets/image_recettes/" . $imageName; // Chemin relatif
-
-    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $uploadDir . $imageName)) {
-        die("Erreur : Impossible d'uploader l'image.");
-    }
-}
