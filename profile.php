@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <h2>Assemblez un menu unique en sélectionnant vos plats préférés !</h2>
 
-            <button onclick="window.location.href='./menu.php';">Créer votre menu</button>
+            <button onclick="window.location.href='creation_menu.php'">Créer votre menu</button>
 
             <br>
 

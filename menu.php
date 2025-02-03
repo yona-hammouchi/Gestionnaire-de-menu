@@ -1,136 +1,118 @@
 <?php
 include 'includes/db_connection.php';
-session_start();
-session_start();
 
-if (isset($_COOKIE['username'])) {
-    $username = htmlspecialchars($_COOKIE['username']);
-} else {
-    $username = 'Invité';
-}
+// Vérifier que l'ID du menu est présent dans l'URL
+if (isset($_GET['menu_id'])) {
+    $menu_id = $_GET['menu_id'];
 
-// Récupérer les plats des catégories disponibles
-$stmt = $pdo->query("SELECT id, titre, id_categorie FROM plats");
-$plats = $stmt->fetchAll();
+    // Récupérer le nom du menu
+    $stmt = $pdo->prepare("SELECT nom_menu FROM menus WHERE id = :menu_id");
+    $stmt->bindParam(':menu_id', $menu_id);
+    $stmt->execute();
+    $menu = $stmt->fetch();
 
-// Récupérer les catégories pour afficher la sélection
-$categories_stmt = $pdo->query("SELECT id, nom FROM categories");
-$categories = $categories_stmt->fetchAll();
+    if ($menu) {
+        echo "<h1>" . htmlspecialchars($menu['nom_menu']) . "</h1>";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['menu'])) {
-    // Récupérer les plats sélectionnés
-    $selected_plats = $_POST['plats'] ?? []; // Si vide, tableau vide
-
-    // Vérifier qu'un nom de menu est bien renseigné
-    if (empty($_POST['nom_menu']) || empty($selected_plats)) {
-        die("Erreur : Veuillez entrer un nom de menu et sélectionner au moins un plat.");
-    }
-
-    try {
-        // Récupérer l'utilisateur connecté
-        $id_user = isset($_COOKIE['id_user']) ? (int) $_COOKIE['id_user'] : null;
-
-        if ($id_user === null) {
-            die("Erreur : Utilisateur non connecté.");
-        }
-
-        // Insérer le menu dans la base de données
-        $sql = "INSERT INTO menu (id_user, nom_menu) VALUES (:id_user, :nom_menu)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_user', $id_user);
-        $stmt->bindParam(':nom_menu', $_POST['nom_menu']);
+        // Récupérer les plats associés à ce menu
+        $stmt = $pdo->prepare("SELECT plats.titre, plats.description, plats.prix 
+                               FROM plats 
+                               JOIN menu_plats ON plats.id = menu_plats.plat_id 
+                               WHERE menu_plats.menu_id = :menu_id");
+        $stmt->bindParam(':menu_id', $menu_id);
         $stmt->execute();
+        $plats = $stmt->fetchAll();
 
-        // Récupérer l'ID du menu nouvellement créé
-        $menu_id = $pdo->lastInsertId();
-
-        // Insérer les plats sélectionnés dans une table de liaison (exemple : menu_plats)
-        $sql = "INSERT INTO menu_plats (menu_id, plat_id) VALUES (:menu_id, :plat_id)";
-        $stmt = $pdo->prepare($sql);
-
-        foreach ($selected_plats as $plat_id) {
-            $stmt->bindParam(':menu_id', $menu_id);
-            $stmt->bindParam(':plat_id', $plat_id);
-            $stmt->execute();
+        if ($plats) {
+            echo "<ul>";
+            foreach ($plats as $plat) {
+                echo "<li><strong>" . htmlspecialchars($plat['titre']) . "</strong><br>";
+                echo "Description: " . htmlspecialchars($plat['description']) . "<br>";
+                echo "Prix: " . htmlspecialchars($plat['prix']) . "€</li>";
+            }
+            echo "</ul>";
+        } else {
+            echo "<p>Aucun plat associé à ce menu.</p>";
         }
+    } else {
+        echo "<p>Menu non trouvé.</p>";
+    }
+} else {
+    echo "<p>ID du menu non spécifié.</p>";
+}
+?>
 
-        echo "Menu créé avec succès !";
-    } catch (PDOException $e) {
-        echo "Erreur lors de la création du menu : " . $e->getMessage();
+<?php
+include 'includes/db_connection.php';
+
+// Récupérer tous les menus avec leurs plats associés
+$stmt = $pdo->query("SELECT menus.id AS menu_id, menus.nom_menu, plats.titre AS plat_titre
+                     FROM menus
+                     LEFT JOIN menu_plats ON menus.id = menu_plats.menu_id
+                     LEFT JOIN plats ON menu_plats.plat_id = plats.id
+                     ORDER BY menus.id, plats.id");
+
+$menus = [];
+while ($row = $stmt->fetch()) {
+    // Organiser les menus et plats dans un tableau associatif
+    $menus[$row['menu_id']]['nom_menu'] = $row['nom_menu'];
+    if ($row['plat_titre']) {
+        $menus[$row['menu_id']]['plats'][] = $row['plat_titre'];
     }
 }
+
+// Affichage des menus et des plats
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="styles\global.css">
+    <link rel="stylesheet" href="./styles/global.css">
+    <link rel="stylesheet" href="./styles/menu.css">
+
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-</head>
-
 <body>
-    <header>
-        <nav>
-            <ul class="navbar">
-                <li>
-                    <div class="logo_acceuil">
-                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
-                    </div>
-                </li>
-                <li>
-                    <div class="logo_navbar">
-                        <a href="inscription.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
 
     <main>
-        <h1>Bonjour, <?php echo $username; ?> !</h1>
+        <h1>Liste des menus créés</h1>
 
-        <h2>Créez une expérience culinaire sur mesure et partagez-la avec vos invités."</h2>
-
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-
-            <!-- Champ pour le nom du menu -->
-            <label for="nom_menu">Nom de votre menu :</label>
-            <input type="text" name="nom_menu" id="nom_menu" required>
-
-            <h3>Choisissez vos plats :</h3>
-            <div class="categories">
-                <?php
-                // Afficher les plats par catégorie
-                foreach ($categories as $categorie) {
-                    echo "<h4>" . htmlspecialchars($categorie['nom']) . "</h4>";
-
-                    foreach ($plats as $plat) {
-                        // Filtrer les plats par catégorie
-                        if ($plat['id_categorie'] == $categorie['id']) {
-                            echo "<label><input type='checkbox' name='plats[]' value='" . $plat['id'] . "'> " . htmlspecialchars($plat['titre']) . "</label><br>";
-                        }
+        <?php
+        if ($menus) {
+            // Afficher chaque menu et ses plats associés
+            foreach ($menus as $menu_id => $menu) {
+                echo "<h2>" . htmlspecialchars($menu['nom_menu']) . "</h2>";
+                if (!empty($menu['plats'])) {
+                    echo "<ul>";
+                    foreach ($menu['plats'] as $plat) {
+                        echo "<li>" . htmlspecialchars($plat) . "</li>";
                     }
+                    echo "</ul>";
+                } else {
+                    echo "<p>Aucun plat associé à ce menu.</p>";
                 }
-                ?>
-            </div>
-
-            <button onclick="window.location.href='./menu.php';">Créer votre menu</button>
-        </form>
+            }
+        } else {
+            echo "<p>Aucun menu n'a encore été créé.</p>";
+        }
+        ?>
     </main>
+
     <footer>
-        <section class="footer">
+    <section class="footer">
             <div>
-                <p>Contact</p>
-            </div>
+                <p>
+                    Contact
+                </p>
+                 </div>
+               <div>
+                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="50px"></a>  
+    </div>
             <div>
                 Connexion
             </div>
@@ -141,8 +123,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['menu'])) {
         </section>
     </footer>
 
-
-
 </body>
-
 </html>

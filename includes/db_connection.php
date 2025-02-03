@@ -1,7 +1,7 @@
 <?php
 // Informations de connexion
 $host = 'localhost';
-$dbname = 'Gestionnaire-de-menu'; // Assurez-vous que cette base existe
+$dbname = 'gestionnaire_de_menu'; // Assurez-vous que cette base existe
 $username = 'root'; // Par défaut pour phpMyAdmin
 $password = 'root'; // Mot de passe local (changez-le si nécessaire)
 try {
