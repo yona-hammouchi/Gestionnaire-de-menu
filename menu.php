@@ -1,6 +1,7 @@
 <?php
 include 'includes/db_connection.php';
 session_start();
+session_start();
 
 if (isset($_COOKIE['username'])) {
     $username = htmlspecialchars($_COOKIE['username']);
