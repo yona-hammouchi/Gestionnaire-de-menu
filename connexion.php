@@ -1,5 +1,6 @@
 <?php
-require_once 'includes\db_connection.php';
+
+require_once 'includes/db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
@@ -29,14 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
-<!DOCTYPE html>
-<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles\style_connexion.css">
-    <link rel="stylesheet" href="styles\global.css">
+    <link rel="stylesheet" href="styles/style_connexion.css">
+    <link rel="stylesheet" href="styles/global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <body>
-<header>
+    <header>
         <nav>
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <a href ="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
+                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
