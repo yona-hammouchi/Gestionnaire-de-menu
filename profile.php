@@ -1,17 +1,33 @@
 <?php
 require_once 'includes/db_connection.php';
-session_start();
 
 if (isset($_COOKIE['username'])) {
     $username = htmlspecialchars($_COOKIE['username']);
 } else {
-    die("Accès non autorisé. Veuillez vous connecter.");
+    $username = 'Invité';
 }
 
-$username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username']) : 'Invité';
-?>
-<?php
-require_once 'includes/db_connection.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Vérifier si les champs nécessaires sont remplis
+    if (empty($_POST['titre']) || empty($_POST['prix'])) {
+        echo "Erreur : les champs Titre du plat et prix sont obligatoires.";
+    } else {
+        // Récupérer les données du formulaire
+        $titre = $_POST['titre'];
+        $description = $_POST['description'];
+        $prix = $_POST['prix'];
+        $id_categorie = $_POST['id_categorie'];
+
+        try {
+            // Préparer la requête SQL pour l'insertion dans la base de données
+            $sql = "INSERT INTO plats (titre, description, prix, id_categorie) VALUES (:titre, :description, :prix, :id_categorie)";
+            $stmt = $pdo->prepare($sql);
+
+            // Lier les paramètres à la requête préparée
+            $stmt->bindParam(':titre', $titre);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':prix', $prix);
+            $stmt->bindParam(':id_categorie', $id_categorie);
 
             // Suppression d'un plat
             if (isset($_POST['delete_id'])) {
@@ -24,35 +40,13 @@ require_once 'includes/db_connection.php';
                     $stmt->bindParam(':id', $plat_id);
                     $stmt->execute();
 
-        // Rediriger après la suppression
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
-    } catch (PDOException $host) {
-        echo "Erreur : " . $host->getMessage();
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Vérifier si les champs nécessaires sont remplis
-    if (empty($_POST['titre']) || empty($_POST['prix'])) {
-        echo "Erreur : les champs Titre du plat et prix sont obligatoires.";
-    } else {
-        // Récupérer les données du formulaire
-        $titre = $_POST['titre'];
-        $description = $_POST['description'];
-        $prix = $_POST['prix'];
-        $categorie_id = $_POST['categorie_id'];
-
-        try {
-            // Préparer la requête SQL pour l'insertion dans la base de données
-            $sql = "INSERT INTO plats (titre, description, prix, categorie_id) VALUES (:titre, :description, :prix, :categorie_id)";
-            $stmt = $pdo->prepare($sql);
-
-            // Lier les paramètres à la requête préparée
-            $stmt->bindParam(':titre', $titre);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':prix', $prix);
-            $stmt->bindParam(':categorie_id', $categorie_id);
+                    // Rediriger après la suppression
+                    header("Location: " . $_SERVER['PHP_SELF']);
+                    exit;
+                } catch (PDOException $e) {
+                    echo "Erreur : " . $e->getMessage();
+                }
+            }
 
             // Exécuter la requête
             $stmt->execute();
@@ -70,8 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles\global.css">
-    <link rel="stylesheet" href="styles/style_profil.css">
+    <link rel="stylesheet" href="./styles/global.css">
+    <link rel="stylesheet" href="./styles/style_profil.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,57 +92,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <main>
         <h1>Bonjour, <?php echo $username; ?>!</h1>
-        <h1><a href="menu.php">Menu</a>
-            <h1>
 
-                <!-- Formulaire d'ajout de plat -->
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
-
-                    <label for="titre">Titre du plat :</label>
-                    <input type="text" name="titre" id="titre" required>
-
-                    <label for="description">Description :</label>
-                    <textarea name="description" id="description" required></textarea>
-
-                    <label for="prix">Prix :</label>
-                    <input type="number" name="prix" id="prix" step="0.01" required>
-
-                    <!-- Menu déroulant pour la catégorie -->
-                    <label for="categorie">Catégorie :</label>
-                    <select name="categorie_id" id="categorie" required>
-                        <?php
-                        // Récupérer toutes les catégories de la base de données
-                        $stmt = $pdo->query("SELECT id,nom FROM categorie");
-                        $categories = $stmt->fetchAll();
-
-                        // Afficher chaque catégorie dans le menu déroulant
-                        foreach ($categories as $categorie) {
-                            echo "<option value='" . htmlspecialchars($categorie['id']) . "'>" . htmlspecialchars($categorie['nom']) . "</option>";
-                        }
-                        ?>
-                    </select>
-
-                    <button type="submit">Ajouter le plat</button>
-                </form>
-
-                <!-- Affichage des plats -->
-                <h2>Liste des plats</h2>
-                <ul>
+        <h2>Ajoutez votre touche personnelle en créant un nouveau plat !</h2>
+        <div>
+            <!-- Formulaire d'ajout de plat -->
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+                <label for="titre">Titre du plat :</label>
+                <input type="text" name="titre" id="titre" required>
+                <label for="description">Description : ingredients</label>
+                <textarea name="description" id="description" required></textarea>
+                <label for="prix">Prix :</label>
+                <input type="number" name="prix" id="prix" step="0.01" required>
+                <label for="categorie">Catégorie :</label>
+                <select name="id_categorie" id="id_categorie" required>
                     <?php
-                    $stmt = $pdo->query("SELECT plats.titre, plats.description, plats.prix, categorie.nom AS categorie FROM plats LEFT JOIN categorie ON plats.categorie_id = categorie.id");
-                    $plats = $stmt->fetchAll();
-
-                    foreach ($plats as $plat) {
-                        echo "<li>" . htmlspecialchars($plat['titre']) . " - " . htmlspecialchars($plat['description']) . " - " . htmlspecialchars($plat['prix']) . "€ - " . htmlspecialchars($plat['categorie']) . "</li>";
+                    $Categories = $pdo->query("SELECT * FROM Categories")->fetchAll();
+                    foreach ($Categories as $Categorie) {
+                        echo "<option value='{$Categorie['id']}'>{$Categorie['Nom']}</option>";
                     }
                     ?>
-                </ul>
-    </main>
+                </select>
+                <button type="submit">Ajouter le plat</button>
+            </form>
 
+            <h2>Assemblez un menu unique en sélectionnant vos plats préférés !</h2>
+
+            <button onclick="window.location.href='creation_menu.php'">Créer votre menu</button>
+
+            <br>
+
+            <!-- Affichage des plats -->
+            <h2>Liste des plats</h2>
+            <ul>
+                <?php
+                // Récupérer et afficher tous les plats
+                $stmt = $pdo->query("SELECT * FROM plats");
+                $plats = $stmt->fetchAll();
+                foreach ($plats as $plat) {
+                    echo "<li>" . htmlspecialchars($plat['titre']) . " - " . htmlspecialchars($plat['description']) . " - " . htmlspecialchars($plat['prix']) . "€</li>";
+                }
+                ?>
+            </ul>
+        </div>
+
+    </main>
     <footer>
         <section class="footer">
             <div>
-                <p>Contact</p>
+                <p>
+                    Contact
+                </p>
             </div>
             <div>
                 Connexion
@@ -160,5 +153,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </section>
     </footer>
 </body>
-
-</html>
