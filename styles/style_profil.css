@@ -10,3 +10,8 @@ ul {
     text-align: center;
     list-style-type: none;
 }
+
+footer{
+    position: fixed;
+    bottom: 0%;
+}
