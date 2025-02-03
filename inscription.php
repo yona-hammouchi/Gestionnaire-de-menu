@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/db_connection.php';
+require_once 'includes/db_connection.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -7,8 +8,8 @@ require_once 'includes/db_connection.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles\style_inscription.css">
-    <link rel="stylesheet" href="styles\global.css">
+    <link rel="stylesheet" href="./styles/style_inscription.css">
+    <link rel="stylesheet" href="./styles/global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -112,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             $success = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
         } catch (PDOException $host) {
-            if ($e->getCode() === '23000') {
+            if ($host->getCode() === '23000') {
                 $error = "Le nom d'utilisateur ou l'email existe déjà.";
             } else {
                 $error = "Erreur lors de l'inscription : " . $host->getMessage();
