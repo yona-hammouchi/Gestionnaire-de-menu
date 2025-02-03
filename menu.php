@@ -2,55 +2,62 @@
 include 'includes/db_connection.php';
 session_start();
 
-if (isset($_COOKIE['user_id'])) {
-    if (basename($_SERVER['PHP_SELF']) !== 'profile.php') {
-        header('Location: /Gestionnaire-de-menu/pages/profile.php');
-        exit();
-    }
+if (isset($_COOKIE['username'])) {
+    $username = htmlspecialchars($_COOKIE['username']);
 } else {
-    die("Accès non autorisé. Veuillez vous connecter.");
+    $username = 'Invité';
 }
 
-$username = isset($_COOKIE['username']) ? htmlspecialchars($_COOKIE['username']) : 'Invité';
-
 // Récupérer les plats des catégories disponibles
-
-$stmt = $pdo->query("SELECT id, titre, categorie_id FROM plats");
+$stmt = $pdo->query("SELECT id, titre, id_categorie FROM plats");
 $plats = $stmt->fetchAll();
 
 // Récupérer les catégories pour afficher la sélection
-$categories_stmt = $pdo->query("SELECT id, nom FROM categorie");
+$categories_stmt = $pdo->query("SELECT id, nom FROM categories");
 $categories = $categories_stmt->fetchAll();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['menu'])) {
     // Récupérer les plats sélectionnés
-    $selected_plats = $_POST['plats']; // Un tableau d'ID de plats
+    $selected_plats = $_POST['plats'] ?? []; // Si vide, tableau vide
 
-    // Insérer le menu dans la base de données (exemple de table `menus`)
+    // Vérifier qu'un nom de menu est bien renseigné
+    if (empty($_POST['nom_menu']) || empty($selected_plats)) {
+        die("Erreur : Veuillez entrer un nom de menu et sélectionner au moins un plat.");
+    }
+
     try {
-        // Créer un menu
-        $sql = "INSERT INTO menu (user_id, nom) VALUES (:user_id, :nom_menu)";
+        // Récupérer l'utilisateur connecté
+        $id_user = isset($_COOKIE['id_user']) ? (int) $_COOKIE['id_user'] : null;
+
+        if ($id_user === null) {
+            die("Erreur : Utilisateur non connecté.");
+        }
+
+        // Insérer le menu dans la base de données
+        $sql = "INSERT INTO menu (id_user, nom_menu) VALUES (:id_user, :nom_menu)";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':user_id', $_COOKIE['user_id']);
+        $stmt->bindParam(':id_user', $id_user);
         $stmt->bindParam(':nom_menu', $_POST['nom_menu']);
-        // Récupérer l'ID du dernier menu créé
+        $stmt->execute();
+
+        // Récupérer l'ID du menu nouvellement créé
         $menu_id = $pdo->lastInsertId();
-        // Associer les plats sélectionnés au menu
+
+        // Insérer les plats sélectionnés dans une table de liaison (exemple : menu_plats)
+        $sql = "INSERT INTO menu_plats (menu_id, plat_id) VALUES (:menu_id, :plat_id)";
+        $stmt = $pdo->prepare($sql);
 
         foreach ($selected_plats as $plat_id) {
-            $sql = "INSERT INTO menu_plats (menu_id, plat_id) VALUES (:menu_id, :plat_id)";
-            $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':menu_id', $menu_id);
             $stmt->bindParam(':plat_id', $plat_id);
             $stmt->execute();
         }
 
         echo "Menu créé avec succès !";
-    } catch (PDOException $host) {
-        echo "Erreur : " . $host->getMessage();
+    } catch (PDOException $e) {
+        echo "Erreur lors de la création du menu : " . $e->getMessage();
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['menu'])) {
 
                     foreach ($plats as $plat) {
                         // Filtrer les plats par catégorie
-                        if ($plat['categorie_id'] == $categorie['id']) {
+                        if ($plat['id_categorie'] == $categorie['id']) {
                             echo "<label><input type='checkbox' name='plats[]' value='" . $plat['id'] . "'> " . htmlspecialchars($plat['titre']) . "</label><br>";
                         }
                     }
@@ -115,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['menu'])) {
                 ?>
             </div>
 
-            <button type="submit" name="menu">Créer le menu</button>
+            <button onclick="window.location.href='./menu.php';">Créer votre menu</button>
         </form>
     </main>
     <footer>

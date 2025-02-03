@@ -50,12 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Exécuter la requête
             $stmt->execute();
-
-
-            // Redirection vers la même page après l'ajout
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit; // Assure-toi que le script s'arrête ici après la redirection
-
         } catch (PDOException $host) {
             echo "Erreur : " . $host->getMessage();
         }
@@ -122,11 +116,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
 
             <h2>Assemblez un menu unique en sélectionnant vos plats préférés !</h2>
-            <a href="menu.php" class="button">Créer votre Menu</a>
+
+            <button onclick="window.location.href='./menu.php';">Créer votre menu</button>
 
             <br>
-
-            <a href="/Gestionnaire-de-menu/menu.php" class="button">menu</a>
 
             <!-- Affichage des plats -->
             <h2>Liste des plats</h2>
