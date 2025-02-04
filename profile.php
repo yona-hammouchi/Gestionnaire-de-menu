@@ -7,57 +7,52 @@ if (isset($_COOKIE['username'])) {
     $username = 'Invité';
 }
 
+// Suppression d'un plat
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+    $plat_id = $_GET['id'];
+
+    try {
+        $sql = "DELETE FROM plats WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $plat_id);
+        $stmt->execute();
+
+        // Redirection pour éviter répétition de l'action
+        header("Location: profile.php");
+        exit;
+    } catch (PDOException $e) {
+        echo "Erreur lors de la suppression : " . $e->getMessage();
+    }
+}
+
+// Ajout d'un plat
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Vérifier si les champs nécessaires sont remplis
     if (empty($_POST['titre']) || empty($_POST['prix'])) {
         echo "Erreur : les champs Titre du plat et prix sont obligatoires.";
     } else {
-        // Récupérer les données du formulaire
         $titre = $_POST['titre'];
         $description = $_POST['description'];
         $prix = $_POST['prix'];
         $id_categorie = $_POST['id_categorie'];
 
         try {
-            // Préparer la requête SQL pour l'insertion dans la base de données
             $sql = "INSERT INTO plats (titre, description, prix, id_categorie) VALUES (:titre, :description, :prix, :id_categorie)";
             $stmt = $pdo->prepare($sql);
-
-            // Lier les paramètres à la requête préparée
             $stmt->bindParam(':titre', $titre);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':prix', $prix);
             $stmt->bindParam(':id_categorie', $id_categorie);
-
-            // Suppression d'un plat
-            if (isset($_POST['delete_id'])) {
-                $plat_id = $_POST['delete_id'];
-
-                try {
-                    // Préparer la requête pour supprimer le plat
-                    $sql = "DELETE FROM plats WHERE id = :id";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindParam(':id', $plat_id);
-                    $stmt->execute();
-
-                    // Rediriger après la suppression
-                    header("Location: " . $_SERVER['PHP_SELF']);
-                    exit;
-                } catch (PDOException $e) {
-                    echo "Erreur : " . $e->getMessage();
-                }
-            }
-
-            // Exécuter la requête
             $stmt->execute();
-        } catch (PDOException $host) {
-            echo "Erreur : " . $host->getMessage();
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
         }
     }
 }
 
+$plats = $pdo->query("SELECT plats.*, Categories.Nom as categorie_nom FROM plats 
+                      INNER JOIN Categories ON plats.id_categorie = Categories.id 
+                      ORDER BY Categories.Nom")->fetchAll();
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -67,89 +62,96 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="./styles/global.css">
     <link rel="stylesheet" href="./styles/style_profil.css">
     <title>Cook & Share</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <nav>
             <ul class="navbar">
-                <li>
-                    <div class="logo_acceuil">
-                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
-                    </div>
-                </li>
-                <li>
-                    <div class="logo_navbar">
-                        <a href="profile.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
-                    </div>
-                </li>
+                <li><a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo" height="100px"></a></li>
+                <li><a href="profile.php"><img src="assets/img/logo_profile.png" alt="profile"></a></li>
             </ul>
         </nav>
     </header>
-
     <main>
         <h1>Bonjour, <?php echo $username; ?>!</h1>
-
-        <h2>Ajoutez votre touche personnelle en créant un nouveau plat !</h2>
-        <div>
-            <!-- Formulaire d'ajout de plat -->
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
-                <label for="titre">Titre du plat :</label>
-                <input type="text" name="titre" id="titre" required>
-                <label for="description">Description : ingredients</label>
-                <textarea name="description" id="description" required></textarea>
-                <label for="prix">Prix :</label>
-                <input type="number" name="prix" id="prix" step="0.01" required>
-                <label for="categorie">Catégorie :</label>
-                <select name="id_categorie" id="id_categorie" required>
-                    <?php
-                    $Categories = $pdo->query("SELECT * FROM Categories")->fetchAll();
-                    foreach ($Categories as $Categorie) {
-                        echo "<option value='{$Categorie['id']}'>{$Categorie['Nom']}</option>";
-                    }
-                    ?>
-                </select>
-                <button type="submit">Ajouter le plat</button>
-            </form>
-
-            <h2>Assemblez un menu unique en sélectionnant vos plats préférés !</h2>
-
-            <button onclick="window.location.href='creation_menu.php'">Créer votre menu</button>
-
-            <br>
-
-            <!-- Affichage des plats -->
-            <h2>Liste des plats</h2>
-            <ul>
+        <h2>Ajoutez un nouveau plat !</h2>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <label for="titre">Titre :</label>
+            <input type="text" name="titre" required>
+            <label for="description">Description :</label>
+            <textarea name="description" required></textarea>
+            <label for="prix">Prix :</label>
+            <input type="number" name="prix" step="0.01" required>
+            <label for="id_categorie">Catégorie :</label>
+            <select name="id_categorie" required>
                 <?php
-                // Récupérer et afficher tous les plats
-                $stmt = $pdo->query("SELECT * FROM plats");
-                $plats = $stmt->fetchAll();
-                foreach ($plats as $plat) {
-                    echo "<li>" . htmlspecialchars($plat['titre']) . " - " . htmlspecialchars($plat['description']) . " - " . htmlspecialchars($plat['prix']) . "€</li>";
+                $Categories = $pdo->query("SELECT * FROM Categories")->fetchAll();
+                foreach ($Categories as $Categorie) {
+                    echo "<option value='{$Categorie['id']}'>{$Categorie['Nom']}</option>";
                 }
                 ?>
-            </ul>
-        </div>
+            </select>
+            <button type="submit">Ajouter</button>
+            <button onclick="window.location.href='creation_menu.php'">Créer votre menu</button>
+            <br>
+        </form>
+        <!-- Affichage des plats -->
+        <h2>Liste des plats</h2>
+        <ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $categorie_actuelle = null;
+
+                    // Requête SQL avec un ordre personnalisé des catégories
+                    $plats = $pdo->query("
+                SELECT plats.*, Categories.Nom as categorie_nom 
+                FROM plats 
+                INNER JOIN Categories ON plats.id_categorie = Categories.id 
+                ORDER BY 
+                    FIELD(Categories.Nom, 'Entrée', 'Plat', 'Dessert'), 
+                    plats.titre
+            ")->fetchAll();
+
+                    foreach ($plats as $plat):
+                        // Si la catégorie change, affichez un en-tête de catégorie
+                        if ($categorie_actuelle !== $plat['categorie_nom']) {
+                            $categorie_actuelle = $plat['categorie_nom'];
+                            echo "<tr><th colspan='4' style='background-color: #f4f4f4; text-align:center;'>{$categorie_actuelle}</th></tr>";
+                        }
+                    ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($plat['titre']); ?></td>
+                            <td><?php echo htmlspecialchars($plat['description']); ?></td>
+                            <td class="prix"><?= htmlspecialchars($plat['prix']) ?> €</td>
+                            <td>
+                                <a href="#">Modifier</a>
+                                <a href="profile.php?action=delete&id=<?php echo $plat['id']; ?>">Supprimer</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </ul>
+
 
     </main>
     <footer>
         <section class="footer">
-            <div>
-                <p>
-                    Contact
-                </p>
-            </div>
-            <div>
-                Connexion
-            </div>
-            <div>
-                11 rue du Panier <br>
-                13002 Marseille
-            </div>
+            <div>Contact</div>
+            <div>Connexion</div>
+            <div>11 rue du Panier, 13002 Marseille</div>
         </section>
     </footer>
 </body>
+
+</html>
