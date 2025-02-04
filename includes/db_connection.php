@@ -1,9 +1,9 @@
 <?php
 // Informations de connexion
 $host = 'localhost';
-$dbname = 'marvin-delansorne_gestionnaire_de_menu'; // Assurez-vous que cette base existe
-$username = 'marvindelansorne'; // Par défaut pour phpMyAdmin
-$password = 'K~5q23q4h'; // Mot de passe local (changez-le si nécessaire)
+$dbname = 'gestionnaire_de_menu'; // Assurez-vous que cette base existe
+$username = 'root'; // Par défaut pour phpMyAdmin
+$password = 'root'; // Mot de passe local (changez-le si nécessaire)
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
