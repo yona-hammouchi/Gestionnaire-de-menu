@@ -3,7 +3,7 @@
 $host = 'localhost';
 $dbname = 'gestionnaire_de_menu'; // Assurez-vous que cette base existe
 $username = 'root'; // Par défaut pour phpMyAdmin
-$password = 'root'; // Mot de passe local (changez-le si nécessaire)
+$password = 'root';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

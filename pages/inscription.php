@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db_connection.php';
+require_once '../includes/db_connection.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -7,14 +7,13 @@ require_once 'includes/db_connection.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/style_inscription.css">
-    <link rel="stylesheet" href="./styles/global.css">
+    <link rel="stylesheet" href="../styles/style_inscription.css">
+    <link rel="stylesheet" href="../styles/global.css">
     <title>Cook & Share</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-
 
 <body>
     <header>
@@ -22,12 +21,12 @@ require_once 'includes/db_connection.php';
             <ul class="navbar">
                 <li>
                     <div class="logo_acceuil">
-                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
+                        <a href="../index.php"><img src="../assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
                     </div>
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="profile.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
+                        <a href="../pages/profile.php"><img src="../assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
@@ -35,7 +34,7 @@ require_once 'includes/db_connection.php';
     </header>
 
     <h1>INSCRIPTION</h1>
-    <form action="/Gestionnaire-de-menu/inscription.php" method="POST">
+    <form action="inscription.php" method="POST">
         <label for="username">Nom d'utilisateur :</label>
         <input type="text" id="username" name="username" required><br><br>
 
@@ -49,7 +48,7 @@ require_once 'includes/db_connection.php';
         <input type="password" id="confirm_password" name="confirm_password" required><br><br>
         <button type="submit">S'inscrire</button>
 
-        <a href="connexion.php"><span class="connexion">Déja inscris? Cliquez ici ! </span></a>
+        <a href="pages/connexion.php"><span class="connexion">Déja inscris? Cliquez ici ! </span></a>
     </form>
 
     <footer>

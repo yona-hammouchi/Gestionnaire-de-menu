@@ -23,7 +23,7 @@
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="inscription.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
+                        <a href="pages/inscription.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>

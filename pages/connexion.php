@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db_connection.php';
+require_once '../includes/db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 setcookie('username', $user['username'], time() + (3600 * 30), "/");
 
                 // Redirection
-                header("Location: profile.php");
+                header("Location: ../pages/profile.php");
                 exit();
             } else {
                 $error = "Email ou mot de passe incorrect.";
@@ -38,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles\style_connexion.css">
-    <link rel="stylesheet" href="styles\global.css">
+    <link rel="stylesheet" href="../styles/style_connexion.css">
+    <link rel="stylesheet" href="../styles/global.css">
     <title>Cook & Share</title>
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </li>
                 <li>
                     <div class="logo_navbar">
-                        <a href="profile.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
+                        <a href="../pages/profile.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
                     </div>
                 </li>
             </ul>
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p style="color: red;"><?php echo $error; ?></p>
         <?php endif; ?>
 
-        <form action="connexion.php" method="POST">
+        <form action="..Gestionnaire_de_menu/pages/connexion.php" method="POST">
             <label for="email">Email :</label>
             <input type="email" id="email" name="email" required><br><br>
 
@@ -96,3 +96,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </footer>
 </body>
+
+</html>

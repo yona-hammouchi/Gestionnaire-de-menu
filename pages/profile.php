@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db_connection.php';
+require_once '../includes/db_connection.php';
 
 if (isset($_COOKIE['username'])) {
     $username = htmlspecialchars($_COOKIE['username']);
@@ -18,7 +18,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         $stmt->execute();
 
         // Redirection pour éviter répétition de l'action
-        header("Location: profile.php");
+        header("Location: ../pages/profile.php");
         exit;
     } catch (PDOException $e) {
         echo "Erreur lors de la suppression : " . $e->getMessage();
@@ -59,8 +59,8 @@ $plats = $pdo->query("SELECT plats.*, Categories.Nom as categorie_nom FROM plats
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/global.css">
-    <link rel="stylesheet" href="./styles/style_profil.css">
+    <link rel="stylesheet" href="../styles/style_connexion.css">
+    <link rel="stylesheet" href="../styles/global.css">
     <title>Cook & Share</title>
 </head>
 
@@ -68,8 +68,16 @@ $plats = $pdo->query("SELECT plats.*, Categories.Nom as categorie_nom FROM plats
     <header>
         <nav>
             <ul class="navbar">
-                <li><a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo" height="100px"></a></li>
-                <li><a href="profile.php"><img src="assets/img/logo_profile.png" alt="profile"></a></li>
+                <li>
+                    <div class="logo_acceuil">
+                        <a href="index.php"><img src="./assets/img/logo_cook_&_share.png" alt="logo_cook&share" height="100px"></a>
+                    </div>
+                </li>
+                <li>
+                    <div class="logo_navbar">
+                        <a href="./pages/inscription.php"><img src="assets/img/logo_profile.png" alt="logo_profile"></a>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
@@ -135,7 +143,7 @@ $plats = $pdo->query("SELECT plats.*, Categories.Nom as categorie_nom FROM plats
                             <td class="prix"><?= htmlspecialchars($plat['prix']) ?> €</td>
                             <td>
                                 <a href="#">Modifier</a>
-                                <a href="profile.php?action=delete&id=<?php echo $plat['id']; ?>">Supprimer</a>
+                                <a href="../pages/profile.php echo $plat['id']; ?>">Supprimer</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
